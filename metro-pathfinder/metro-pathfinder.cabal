@@ -1,0 +1,96 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.1.
+--
+-- see: https://github.com/sol/hpack
+
+name:           metro-pathfinder
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/metro-pathfinder#readme>
+homepage:       https://github.com/githubuser/metro-pathfinder#readme
+bug-reports:    https://github.com/githubuser/metro-pathfinder/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2026 Author name here
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/metro-pathfinder
+
+library
+  exposed-modules:
+      Graph.Types
+      Graph.Dijkstra
+      Graph.Loader
+      CLI.Menu
+      Visualization.Render
+      Logging.Logger
+  other-modules:
+      Paths_metro_pathfinder
+  autogen-modules:
+      Paths_metro_pathfinder
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      QuickCheck >=2.14.2
+    , base >=4.14 && <5
+    , bytestring >=0.11.3.0
+    , containers >=0.6.5.1
+    , directory >=1.3.7.0
+    , filepath >=1.4.2
+    , mtl >=2.2.2
+    , text >=2.0.1
+    , time >=1.11.1
+  default-language: Haskell2010
+
+executable metro-pathfinder-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_metro_pathfinder
+  autogen-modules:
+      Paths_metro_pathfinder
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck >=2.14.2
+    , base >=4.14 && <5
+    , bytestring >=0.11.3.0
+    , containers >=0.6.5.1
+    , directory >=1.3.7.0
+    , filepath >=1.4.2
+    , metro-pathfinder
+    , mtl >=2.2.2
+    , text >=2.0.1
+    , time >=1.11.1
+  default-language: Haskell2010
+
+test-suite metro-pathfinder-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_metro_pathfinder
+  autogen-modules:
+      Paths_metro_pathfinder
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , base >=4.14 && <5
+    , bytestring >=0.11.3.0
+    , containers >=0.6.5.1
+    , directory >=1.3.7.0
+    , filepath >=1.4.2
+    , metro-pathfinder
+    , mtl >=2.2.2
+    , text >=2.0.1
+    , time >=1.11.1
+  default-language: Haskell2010
