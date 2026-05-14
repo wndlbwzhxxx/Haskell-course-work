@@ -2,7 +2,7 @@ module CLI.Menu (runCLI) where
 
 import Graph.Types
 import Graph.Dijkstra
-import Graph.Loader
+import Graph.Loader (loadGraphFromJSON, exportGraphToJSON)
 import Logging.Logger
 import qualified Data.Map as Map
 import qualified Data.Text as T
@@ -22,24 +22,26 @@ loop :: AppState -> IO ()
 loop state = do
   putStrLn "\n=== METRO PATHFINDER ==="
   putStrLn "1. Load graph from JSON"
-  putStrLn "2. Load sample graph (A,B,C)"
-  putStrLn "3. Find shortest path"
-  putStrLn "4. List all stations"
-  putStrLn "5. Find station by name"
-  putStrLn "6. View log"
-  putStrLn "7. Clear log"
+  putStrLn "2. Export graph to JSON"
+  putStrLn "3. Load sample graph (A,B,C)"
+  putStrLn "4. Find shortest path"
+  putStrLn "5. List all stations"
+  putStrLn "6. Find station by name"
+  putStrLn "7. View log"
+  putStrLn "8. Clear log"
   putStrLn "0. Exit"
   putStr "Choice: "
   hFlush stdout
   choice <- getLine
   case choice of
     "1" -> loadJSON state >>= loop
-    "2" -> loadSample state >>= loop
-    "3" -> findPath state >>= loop
-    "4" -> listStations state >>= loop
-    "5" -> findStation state >>= loop
-    "6" -> viewLog >>= loop
-    "7" -> clearLogHandler >>= loop
+    "2" -> exportJSON state >>= loop
+    "3" -> loadSample state >>= loop
+    "4" -> findPath state >>= loop
+    "5" -> listStations state >>= loop
+    "6" -> findStation state >>= loop
+    "7" -> viewLog >>= loop
+    "8" -> clearLogHandler >>= loop
     "0" -> do
       logMsg Info "Application exited"
       putStrLn "Goodbye!"
@@ -67,6 +69,25 @@ loadJSON state = do
           logMsg Info ("Graph loaded from " ++ path)
           return (state { currentGraph = Just graph })
 
+exportJSON :: AppState -> IO AppState
+exportJSON state = do
+  case currentGraph state of
+    Nothing -> do
+      putStrLn "No graph loaded. Load a graph first (option 1 or 3)."
+      return state
+    Just graph -> do
+      putStr "Enter path to save JSON file: "
+      path <- getLine
+      if null path
+        then do
+          putStrLn "Path cannot be empty"
+          return state
+        else do
+          exportGraphToJSON graph path
+          putStrLn $ "Graph exported to " ++ path
+          logMsg Info ("Graph exported to " ++ path)
+          return state
+
 loadSample :: AppState -> IO AppState
 loadSample _ = do
   let stationA = Station (T.pack "A") (T.pack "A") Nothing Nothing
@@ -86,7 +107,7 @@ findPath :: AppState -> IO AppState
 findPath state = do
   case currentGraph state of
     Nothing -> do
-      putStrLn "No graph loaded. Choose option 1 or 2 first."
+      putStrLn "No graph loaded. Choose option 1 or 3 first."
       return state
     Just graph -> do
       putStr "Enter start station: "
@@ -121,7 +142,7 @@ listStations :: AppState -> IO AppState
 listStations state = do
   case currentGraph state of
     Nothing -> do
-      putStrLn "No graph loaded. Choose option 1 or 2 first."
+      putStrLn "No graph loaded. Choose option 1 or 3 first."
       return state
     Just graph -> do
       putStrLn $ "\nTotal stations: " ++ show (Map.size (stations graph))
@@ -133,7 +154,7 @@ findStation :: AppState -> IO AppState
 findStation state = do
   case currentGraph state of
     Nothing -> do
-      putStrLn "No graph loaded. Choose option 1 or 2 first."
+      putStrLn "No graph loaded. Choose option 1 or 3 first."
       return state
     Just graph -> do
       putStr "Enter station name (or part of it): "
