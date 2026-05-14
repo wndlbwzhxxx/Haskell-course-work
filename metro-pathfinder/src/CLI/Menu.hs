@@ -1,67 +1,54 @@
-module CLI.Menu where
+module CLI.Menu (runCLI) where
 
 import Graph.Types
-import Graph.Loader
 import Graph.Dijkstra
+import Graph.Loader
 import Logging.Logger
 import qualified Data.Map as Map
 import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
-import Data.Maybe (isJust, fromMaybe)
 import System.IO (hFlush, stdout)
 
 data AppState = AppState
   { currentGraph :: Maybe Graph
-  , lastPath :: Maybe PathResult
+  , lastPathResult :: Maybe PathResult
   }
 
 runCLI :: IO ()
 runCLI = do
-  logMessage Info "Application started"
+  logMsg Info "Application started"
   loop (AppState Nothing Nothing)
-  where
-    loop state = do
-      showMenu
-      choice <- getLine
-      case choice of
-        "1" -> loadGraphHandler state >>= loop
-        "2" -> exportGraphHandler state >>= loop
-        "3" -> listStationsHandler state >>= loop
-        "4" -> findStationHandler state >>= loop
-        "5" -> findPathHandler state >>= loop
-        "6" -> visualizeGraphHandler state >>= loop
-        "7" -> visualizePathHandler state >>= loop
-        "8" -> viewLogHandler >>= loop
-        "9" -> clearLogHandler >>= loop
-        "0" -> do
-          logMessage Info "Application exited"
-          putStrLn "Goodbye!"
-        _ -> do
-          putStrLn "Invalid choice. Press Enter to continue..."
-          _ <- getLine
-          loop state
 
-showMenu :: IO ()
-showMenu = do
-  putStrLn "\n========================================"
-  putStrLn "       METRO PATHFINDER"
-  putStrLn "========================================"
+loop :: AppState -> IO ()
+loop state = do
+  putStrLn "\n=== METRO PATHFINDER ==="
   putStrLn "1. Load graph from JSON"
-  putStrLn "2. Export graph to JSON"
-  putStrLn "3. List all stations"
-  putStrLn "4. Find station by name"
-  putStrLn "5. Find shortest path"
-  putStrLn "6. Visualize entire graph"
-  putStrLn "7. Visualize path"
-  putStrLn "8. View log"
-  putStrLn "9. Clear log"
+  putStrLn "2. Load sample graph (A,B,C)"
+  putStrLn "3. Find shortest path"
+  putStrLn "4. List all stations"
+  putStrLn "5. Find station by name"
+  putStrLn "6. View log"
+  putStrLn "7. Clear log"
   putStrLn "0. Exit"
-  putStrLn "========================================"
-  putStr "Your choice: "
+  putStr "Choice: "
   hFlush stdout
+  choice <- getLine
+  case choice of
+    "1" -> loadJSON state >>= loop
+    "2" -> loadSample state >>= loop
+    "3" -> findPath state >>= loop
+    "4" -> listStations state >>= loop
+    "5" -> findStation state >>= loop
+    "6" -> viewLog >>= loop
+    "7" -> clearLogHandler >>= loop
+    "0" -> do
+      logMsg Info "Application exited"
+      putStrLn "Goodbye!"
+    _ -> do
+      putStrLn "Invalid choice"
+      loop state
 
-loadGraphHandler :: AppState -> IO AppState
-loadGraphHandler state = do
+loadJSON :: AppState -> IO AppState
+loadJSON state = do
   putStr "Enter path to JSON file: "
   path <- getLine
   if null path
@@ -72,74 +59,32 @@ loadGraphHandler state = do
       result <- loadGraphFromJSON path
       case result of
         Left err -> do
-          putStrLn $ "Error loading graph: " ++ err
-          logMessage Error (T.pack ("Failed to load graph: " ++ err))
+          putStrLn $ "Error: " ++ err
+          logMsg Error ("Failed to load: " ++ err)
           return state
         Right graph -> do
-          putStrLn $ "Graph loaded successfully! Stations: " ++ show (Map.size (stations graph))
-          logMessage Info (T.pack ("Graph loaded from " ++ path))
+          putStrLn $ "Graph loaded! Stations: " ++ show (Map.size (stations graph))
+          logMsg Info ("Graph loaded from " ++ path)
           return (state { currentGraph = Just graph })
 
-exportGraphHandler :: AppState -> IO AppState
-exportGraphHandler state = do
-  case currentGraph state of
-    Nothing -> do
-      putStrLn "No graph loaded. Please load a graph first."
-      return state
-    Just graph -> do
-      putStr "Enter path to save JSON: "
-      path <- getLine
-      if null path
-        then do
-          putStrLn "Path cannot be empty"
-          return state
-        else do
-          exportGraphToJSON graph path
-          putStrLn "Graph exported successfully"
-          logMessage Info (T.pack ("Graph exported to " ++ path))
-          return state
+loadSample :: AppState -> IO AppState
+loadSample _ = do
+  let sampleGraph = Graph
+        (Map.fromList [(T.pack "A", T.pack "A"), (T.pack "B", T.pack "B"), (T.pack "C", T.pack "C")])
+        (Map.fromList 
+          [ (T.pack "A", [(T.pack "B", Weight 5), (T.pack "C", Weight 10)])
+          , (T.pack "B", [(T.pack "C", Weight 3)])
+          , (T.pack "C", []) ])
+        False
+  putStrLn "Sample graph loaded: A--5-->B--3-->C"
+  logMsg Info "Sample graph loaded"
+  return (AppState (Just sampleGraph) Nothing)
 
-listStationsHandler :: AppState -> IO AppState
-listStationsHandler state = do
+findPath :: AppState -> IO AppState
+findPath state = do
   case currentGraph state of
     Nothing -> do
-      putStrLn "No graph loaded. Please load a graph first."
-      return state
-    Just graph -> do
-      let sts = Map.toList (stations graph)
-      putStrLn $ "\nTotal stations: " ++ show (length sts)
-      putStrLn "----------------------------------------"
-      mapM_ (\(_, s) -> putStrLn $ T.unpack (stationName s)) (take 20 sts)
-      when (length sts > 20) $ putStrLn "... and " ++ show (length sts - 20) ++ " more"
-      return state
-
-findStationHandler :: AppState -> IO AppState
-findStationHandler state = do
-  case currentGraph state of
-    Nothing -> do
-      putStrLn "No graph loaded. Please load a graph first."
-      return state
-    Just graph -> do
-      putStr "Enter station name (or part of it): "
-      query <- getLine
-      if null query
-        then do
-          putStrLn "Query cannot be empty"
-          return state
-        else do
-          let results = Map.filter (\s -> query `T.isInfixOf` T.toLower (stationName s)) (stations graph)
-          if Map.null results
-            then putStrLn "No stations found"
-            else do
-              putStrLn $ "Found " ++ show (Map.size results) ++ " stations:"
-              mapM_ (\s -> putStrLn $ "  - " ++ T.unpack (stationName s)) (Map.elems results)
-          return state
-
-findPathHandler :: AppState -> IO AppState
-findPathHandler state = do
-  case currentGraph state of
-    Nothing -> do
-      putStrLn "No graph loaded. Please load a graph first."
+      putStrLn "No graph loaded. Choose option 1 or 2 first."
       return state
     Just graph -> do
       putStr "Enter start station: "
@@ -151,63 +96,67 @@ findPathHandler state = do
           putStrLn "Station names cannot be empty"
           return state
         else do
-          let startId = T.pack start
-              targetId = T.pack target
-          if Map.notMember startId (stations graph)
+          let startT = T.pack start
+              targetT = T.pack target
+          if not (Map.member startT (stations graph)) || not (Map.member targetT (stations graph))
             then do
-              putStrLn "Start station not found"
+              putStrLn "Station not found"
               return state
-            else if Map.notMember targetId (stations graph)
-              then do
-                putStrLn "Target station not found"
-                return state
-              else do
-                let result = shortestPath graph startId targetId
-                case result of
-                  NoPath -> do
-                    putStrLn "No path found between these stations"
-                    logMessage Warning "No path found"
-                    return state
-                  Path nodes w -> do
-                    putStrLn $ "Path found! Total weight: " ++ show w
-                    putStrLn "Route:"
-                    mapM_ (\n -> putStrLn $ "  -> " ++ T.unpack n) nodes
-                    logMessage Info (T.pack ("Path found from " ++ start ++ " to " ++ target))
-                    return (state { lastPath = Just result })
+            else do
+              let result = shortestPath graph startT targetT
+              case result of
+                NoPath -> do
+                  putStrLn "No path found"
+                  logMsg Warning "No path found"
+                  return state
+                Path nodes w -> do
+                  putStrLn $ "Path found! Distance: " ++ show w
+                  putStrLn $ "Route: " ++ show (map T.unpack nodes)
+                  logMsg Info ("Path found from " ++ start ++ " to " ++ target)
+                  return (state { lastPathResult = Just result })
 
-visualizeGraphHandler :: AppState -> IO AppState
-visualizeGraphHandler state = do
+listStations :: AppState -> IO AppState
+listStations state = do
   case currentGraph state of
     Nothing -> do
-      putStrLn "No graph loaded. Please load a graph first."
+      putStrLn "No graph loaded. Choose option 1 or 2 first."
       return state
-    Just _ -> do
-      putStrLn "Visualization will be implemented in Render module"
-      putStrLn "(requires graphviz library)"
-      return state
-
-visualizePathHandler :: AppState -> IO AppState
-visualizePathHandler state = do
-  case (currentGraph state, lastPath state) of
-    (Nothing, _) -> do
-      putStrLn "No graph loaded. Please load a graph first."
-      return state
-    (_, Nothing) -> do
-      putStrLn "No path found. Please find a path first (option 5)."
-      return state
-    (Just _, Just _) -> do
-      putStrLn "Path visualization will be implemented in Render module"
-      putStrLn "(requires graphviz library)"
+    Just graph -> do
+      putStrLn $ "\nTotal stations: " ++ show (Map.size (stations graph))
+      putStrLn "----------------------------------------"
+      mapM_ (\s -> putStrLn $ "  - " ++ T.unpack s) (Map.keys (stations graph))
       return state
 
-viewLogHandler :: IO AppState
-viewLogHandler = do
+findStation :: AppState -> IO AppState
+findStation state = do
+  case currentGraph state of
+    Nothing -> do
+      putStrLn "No graph loaded. Choose option 1 or 2 first."
+      return state
+    Just graph -> do
+      putStr "Enter station name (or part of it): "
+      query <- getLine
+      if null query
+        then do
+          putStrLn "Query cannot be empty"
+          return state
+        else do
+          let results = filter (\s -> T.isInfixOf (T.pack query) s) (Map.keys (stations graph))
+          if null results
+            then putStrLn "No stations found"
+            else do
+              putStrLn $ "Found " ++ show (length results) ++ " stations:"
+              mapM_ (\s -> putStrLn $ "  - " ++ T.unpack s) results
+          return state
+
+viewLog :: IO AppState
+viewLog = do
   entries <- readLog
   if null entries
     then putStrLn "Log is empty"
     else do
       putStrLn "\n=== LOG ==="
-      mapM_ TIO.putStrLn (take 50 entries)
+      mapM_ putStrLn (take 30 entries)
       putStrLn "==========="
   return (AppState Nothing Nothing)
 
@@ -215,5 +164,5 @@ clearLogHandler :: IO AppState
 clearLogHandler = do
   clearLog
   putStrLn "Log cleared"
-  logMessage Info "Log cleared by user"
+  logMsg Info "Log cleared by user"
   return (AppState Nothing Nothing)

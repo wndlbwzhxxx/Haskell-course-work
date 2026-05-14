@@ -1,56 +1,37 @@
-{-# LANGUAGE OverloadedStrings #-}
-
-module Logging.Logger where
+module Logging.Logger (logMsg, readLog, clearLog) where
 
 import Graph.Types
-import Data.Time (getCurrentTime, UTCTime)
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
 import System.Directory (doesFileExist, getFileSize)
-import System.IO (hFlush, stdout)
+import Data.Time (getCurrentTime, formatTime, defaultTimeLocale)
 import Control.Monad (when)
 
-logFilePath :: FilePath
-logFilePath = "app.log"
+logFile :: FilePath
+logFile = "app.log"
 
-maxLogSize :: Integer
-maxLogSize = 10 * 1024 * 1024
+maxSize :: Integer
+maxSize = 10 * 1024 * 1024
 
-logMessage :: LogLevel -> T.Text -> IO ()
-logMessage level msg = do
-    timestamp <- getCurrentTime
-    let entry = formatEntry timestamp level msg
-    checkLogSize
-    TIO.appendFile logFilePath entry
+logMsg :: LogLevel -> String -> IO ()
+logMsg level msg = do
+  now <- getCurrentTime
+  let timestamp = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" now
+  let entry = timestamp ++ " [" ++ show level ++ "] " ++ msg ++ "\n"
+  exists <- doesFileExist logFile
+  if exists
+    then do
+      size <- getFileSize logFile
+      when (size > maxSize) $ do
+        writeFile (logFile ++ ".old") =<< readFile logFile
+        writeFile logFile ""
+    else return ()
+  appendFile logFile entry
 
-formatEntry :: UTCTime -> LogLevel -> T.Text -> T.Text
-formatEntry ts level msg = 
-    T.pack (show ts) <> " [" <> T.pack (show level) <> "] " <> msg <> "\n"
-
-checkLogSize :: IO ()
-checkLogSize = do
-    exists <- doesFileExist logFilePath
-    when exists $ do
-        size <- getFileSize logFilePath
-        when (size > maxLogSize) rotateLog
-
-rotateLog :: IO ()
-rotateLog = do
-    backupPath <- rotateFileName
-    TIO.readFile logFilePath >>= TIO.writeFile backupPath
-    TIO.writeFile logFilePath ""
-
-rotateFileName :: IO FilePath
-rotateFileName = do
-    now <- getCurrentTime
-    return $ "app." <> T.unpack (T.pack (show now)) <> ".log"
-
-readLog :: IO [T.Text]
+readLog :: IO [String]
 readLog = do
-    exists <- doesFileExist logFilePath
-    if exists
-        then TIO.lines <$> TIO.readFile logFilePath
-        else return []
+  exists <- doesFileExist logFile
+  if exists
+    then lines <$> readFile logFile
+    else return []
 
 clearLog :: IO ()
-clearLog = TIO.writeFile logFilePath ""
+clearLog = writeFile logFile ""

@@ -1,25 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Graph.Loader where
+module Graph.Loader (loadGraphFromJSON) where
 
 import Graph.Types
 import Data.Aeson
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Map as Map
 import qualified Data.Text as T
-import Data.Maybe (fromMaybe)
 
 data JsonStation = JsonStation
   { jsName :: T.Text
-  , jsLat :: Maybe Double
-  , jsLng :: Maybe Double
-  , jsOrder :: Int
-  , jsLine :: Maybe T.Text
   } deriving (Show)
 
 data JsonLine = JsonLine
   { jlName :: T.Text
-  , jlHexColor :: Maybe T.Text
   , jlStations :: [JsonStation]
   } deriving (Show)
 
@@ -30,25 +24,15 @@ data JsonMetro = JsonMetro
 
 instance FromJSON JsonStation where
   parseJSON = withObject "JsonStation" $ \v ->
-    JsonStation
-      <$> v .: "name"
-      <*> v .:? "lat"
-      <*> v .:? "lng"
-      <*> v .: "order"
-      <*> pure Nothing
+    JsonStation <$> v .: "name"
 
 instance FromJSON JsonLine where
   parseJSON = withObject "JsonLine" $ \v ->
-    JsonLine
-      <$> v .: "name"
-      <*> v .:? "hex_color"
-      <*> v .: "stations"
+    JsonLine <$> v .: "name" <*> v .: "stations"
 
 instance FromJSON JsonMetro where
   parseJSON = withObject "JsonMetro" $ \v ->
-    JsonMetro
-      <$> v .: "name"
-      <*> v .: "lines"
+    JsonMetro <$> v .: "name" <*> v .: "lines"
 
 loadGraphFromJSON :: FilePath -> IO (Either String Graph)
 loadGraphFromJSON path = do
@@ -61,7 +45,7 @@ buildGraph :: JsonMetro -> Graph
 buildGraph metro =
   Graph
     { stations = stationsMap
-    , adjList = edgesMap
+    , adjacency = edgesMap
     , isDirected = False
     }
   where
@@ -69,18 +53,15 @@ buildGraph metro =
       line <- jmLines metro
       station <- jlStations line
       let sid = jsName station
-      return (sid, Station sid (jsName station) (Just (jlName line)) Nothing)
-    
+      return (sid, sid)
+
     edgesMap = foldr addLineEdges Map.empty (jmLines metro)
-    
+
     addLineEdges line acc =
       let sts = jlStations line
           pairs = zip sts (tail sts)
-      in foldr (\(s1,s2) m -> addEdge (jsName s1) (jsName s2) 1.0 m) acc pairs
-    
-    addEdge from to weight m =
-      Map.insertWith (<>) from [(to, Weight weight)] $
-      Map.insertWith (<>) to [(from, Weight weight)] m
+      in foldr (\(s1, s2) m -> addEdge (jsName s1) (jsName s2) 1.0 m) acc pairs
 
-exportGraphToJSON :: Graph -> FilePath -> IO ()
-exportGraphToJSON _ _ = return ()
+    addEdge from to weight m =
+      Map.insertWith (++) from [(to, Weight weight)] $
+      Map.insertWith (++) to [(from, Weight weight)] m

@@ -1,0 +1,13 @@
+{
+  "name": "Test Metro",
+  "lines": [
+    {
+      "name": "Red Line",
+      "stations": [
+        {"name": "A"},
+        {"name": "B"},
+        {"name": "C"}
+      ]
+    }
+  ]
+}

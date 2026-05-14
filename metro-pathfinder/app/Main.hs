@@ -1,4 +1,6 @@
 module Main where
 
+import CLI.Menu
+
 main :: IO ()
-main = putStrLn "Metro Pathfinder"
+main = runCLI
