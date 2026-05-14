@@ -16,3 +16,9 @@
 2026-05-14 18:43:07 [Info] Graph loaded from test.json
 2026-05-14 18:43:23 [Info] Graph exported to testx1.json
 2026-05-14 18:43:41 [Info] Application exited
+2026-05-14 19:48:52 [Info] Application started
+2026-05-14 19:49:00 [Info] Sample graph loaded
+2026-05-14 19:49:12 [Info] Graph visualization saved to 1.§â¯
+2026-05-14 19:49:44 [Info] Path found from A to C
+2026-05-14 19:49:55 [Info] Path visualization saved to 1.png
+2026-05-14 19:50:22 [Info] Application exited

@@ -3,6 +3,7 @@ module CLI.Menu (runCLI) where
 import Graph.Types
 import Graph.Dijkstra
 import Graph.Loader (loadGraphFromJSON, exportGraphToJSON)
+import Visualization.Render (renderGraphToPNG, renderPathToPNG)
 import Logging.Logger
 import qualified Data.Map as Map
 import qualified Data.Text as T
@@ -27,8 +28,10 @@ loop state = do
   putStrLn "4. Find shortest path"
   putStrLn "5. List all stations"
   putStrLn "6. Find station by name"
-  putStrLn "7. View log"
-  putStrLn "8. Clear log"
+  putStrLn "7. Visualize entire graph"
+  putStrLn "8. Visualize path"
+  putStrLn "9. View log"
+  putStrLn "10. Clear log"
   putStrLn "0. Exit"
   putStr "Choice: "
   hFlush stdout
@@ -40,8 +43,10 @@ loop state = do
     "4" -> findPath state >>= loop
     "5" -> listStations state >>= loop
     "6" -> findStation state >>= loop
-    "7" -> viewLog >>= loop
-    "8" -> clearLogHandler >>= loop
+    "7" -> visualizeGraph state >>= loop
+    "8" -> visualizePath state >>= loop
+    "9" -> viewLog >>= loop
+    "10" -> clearLogHandler >>= loop
     "0" -> do
       logMsg Info "Application exited"
       putStrLn "Goodbye!"
@@ -170,6 +175,45 @@ findStation state = do
             else do
               putStrLn $ "Found " ++ show (length results) ++ " stations:"
               mapM_ (\s -> putStrLn $ "  - " ++ T.unpack s) results
+          return state
+
+visualizeGraph :: AppState -> IO AppState
+visualizeGraph state = do
+  case currentGraph state of
+    Nothing -> do
+      putStrLn "No graph loaded. Load a graph first (option 1 or 3)."
+      return state
+    Just graph -> do
+      putStr "Enter path to save PNG file: "
+      path <- getLine
+      if null path
+        then do
+          putStrLn "Path cannot be empty"
+          return state
+        else do
+          renderGraphToPNG graph path
+          logMsg Info ("Graph visualization saved to " ++ path)
+          return state
+
+visualizePath :: AppState -> IO AppState
+visualizePath state = do
+  case (currentGraph state, lastPathResult state) of
+    (Nothing, _) -> do
+      putStrLn "No graph loaded. Load a graph first (option 1 or 3)."
+      return state
+    (_, Nothing) -> do
+      putStrLn "No path found. Find a path first (option 4)."
+      return state
+    (Just graph, Just path) -> do
+      putStr "Enter path to save PNG file: "
+      pathStr <- getLine
+      if null pathStr
+        then do
+          putStrLn "Path cannot be empty"
+          return state
+        else do
+          renderPathToPNG graph path pathStr
+          logMsg Info ("Path visualization saved to " ++ pathStr)
           return state
 
 viewLog :: IO AppState

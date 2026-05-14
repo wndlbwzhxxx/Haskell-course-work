@@ -1,5 +1,8 @@
-resolver: lts-21.25
+resolver: lts-22.33
 packages:
 - .
+extra-deps:
+- graphite-0.10.0.1
+allow-newer: true
 casa:
   enable: false
