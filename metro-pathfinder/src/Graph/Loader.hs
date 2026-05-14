@@ -10,6 +10,8 @@ import qualified Data.Text as T
 
 data JsonStation = JsonStation
   { jsName :: T.Text
+  , jsLat :: Maybe Double
+  , jsLng :: Maybe Double
   } deriving (Show)
 
 data JsonLine = JsonLine
@@ -24,15 +26,22 @@ data JsonMetro = JsonMetro
 
 instance FromJSON JsonStation where
   parseJSON = withObject "JsonStation" $ \v ->
-    JsonStation <$> v .: "name"
+    JsonStation
+      <$> v .: "name"
+      <*> v .:? "lat"
+      <*> v .:? "lng"
 
 instance FromJSON JsonLine where
   parseJSON = withObject "JsonLine" $ \v ->
-    JsonLine <$> v .: "name" <*> v .: "stations"
+    JsonLine
+      <$> v .: "name"
+      <*> v .: "stations"
 
 instance FromJSON JsonMetro where
   parseJSON = withObject "JsonMetro" $ \v ->
-    JsonMetro <$> v .: "name" <*> v .: "lines"
+    JsonMetro
+      <$> v .: "name"
+      <*> v .: "lines"
 
 loadGraphFromJSON :: FilePath -> IO (Either String Graph)
 loadGraphFromJSON path = do
@@ -53,7 +62,10 @@ buildGraph metro =
       line <- jmLines metro
       station <- jlStations line
       let sid = jsName station
-      return (sid, sid)
+      let coords = case (jsLat station, jsLng station) of
+            (Just lat', Just lng') -> Just (Coordinates lat' lng')
+            _ -> Nothing
+      return (sid, Station sid (jsName station) (Just (jlName line)) coords)
 
     edgesMap = foldr addLineEdges Map.empty (jmLines metro)
 

@@ -4,9 +4,9 @@
     {
       "name": "Red Line",
       "stations": [
-        {"name": "A"},
-        {"name": "B"},
-        {"name": "C"}
+        {"name": "A", "lat": 55.0, "lng": 37.0},
+        {"name": "B", "lat": 55.1, "lng": 37.1},
+        {"name": "C", "lat": 55.2, "lng": 37.2}
       ]
     }
   ]

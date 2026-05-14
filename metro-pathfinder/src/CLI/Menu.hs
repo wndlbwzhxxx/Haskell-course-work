@@ -69,13 +69,15 @@ loadJSON state = do
 
 loadSample :: AppState -> IO AppState
 loadSample _ = do
-  let sampleGraph = Graph
-        (Map.fromList [(T.pack "A", T.pack "A"), (T.pack "B", T.pack "B"), (T.pack "C", T.pack "C")])
-        (Map.fromList 
-          [ (T.pack "A", [(T.pack "B", Weight 5), (T.pack "C", Weight 10)])
-          , (T.pack "B", [(T.pack "C", Weight 3)])
-          , (T.pack "C", []) ])
-        False
+  let stationA = Station (T.pack "A") (T.pack "A") Nothing Nothing
+      stationB = Station (T.pack "B") (T.pack "B") Nothing Nothing
+      stationC = Station (T.pack "C") (T.pack "C") Nothing Nothing
+      stationsMap = Map.fromList [(T.pack "A", stationA), (T.pack "B", stationB), (T.pack "C", stationC)]
+      edgesMap = Map.fromList 
+        [ (T.pack "A", [(T.pack "B", Weight 5), (T.pack "C", Weight 10)])
+        , (T.pack "B", [(T.pack "C", Weight 3)])
+        , (T.pack "C", []) ]
+  let sampleGraph = Graph stationsMap edgesMap False
   putStrLn "Sample graph loaded: A--5-->B--3-->C"
   logMsg Info "Sample graph loaded"
   return (AppState (Just sampleGraph) Nothing)
