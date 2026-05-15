@@ -7,16 +7,22 @@ import Data.Aeson
 import Data.Aeson.Types (object, (.=))
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 import qualified Data.Text as T
+import Data.List (sortOn)
+import Data.Maybe (isJust)
 
 data JsonStation = JsonStation
   { jsName :: T.Text
   , jsLat :: Maybe Double
   , jsLng :: Maybe Double
+  , jsOrder :: Int
+  , jsTransfers :: [T.Text]
   } deriving (Show)
 
 data JsonLine = JsonLine
   { jlName :: T.Text
+  , jlHexColor :: Maybe T.Text
   , jlStations :: [JsonStation]
   } deriving (Show)
 
@@ -31,11 +37,14 @@ instance FromJSON JsonStation where
       <$> v .: "name"
       <*> v .:? "lat"
       <*> v .:? "lng"
+      <*> v .: "order"
+      <*> v .:? "transfers" .!= []
 
 instance FromJSON JsonLine where
   parseJSON = withObject "JsonLine" $ \v ->
     JsonLine
       <$> v .: "name"
+      <*> v .:? "hex_color"
       <*> v .: "stations"
 
 instance FromJSON JsonMetro where
@@ -45,15 +54,18 @@ instance FromJSON JsonMetro where
       <*> v .: "lines"
 
 instance ToJSON JsonStation where
-  toJSON (JsonStation name lat lng) = object
+  toJSON (JsonStation name lat lng order transfers) = object
     [ "name" .= name
     , "lat" .= lat
     , "lng" .= lng
+    , "order" .= order
+    , "transfers" .= transfers
     ]
 
 instance ToJSON JsonLine where
-  toJSON (JsonLine name stations) = object
+  toJSON (JsonLine name hexColor stations) = object
     [ "name" .= name
+    , "hex_color" .= hexColor
     , "stations" .= stations
     ]
 
@@ -68,13 +80,41 @@ loadGraphFromJSON path = do
   content <- B.readFile path
   case eitherDecode content of
     Left err -> return (Left err)
-    Right metro -> return (Right (buildGraph metro))
+    Right metro -> 
+      let graph = buildGraph metro
+      in case validateGraph graph of
+           Left err -> return (Left err)
+           Right _ -> return (Right graph)
+
+validateGraph :: Graph -> Either String Graph
+validateGraph graph =
+  let stationNames = Map.keys (stations graph)
+      allTransfers = getTransfersList graph
+      invalidTransfers = filter (\(from, to) -> not (to `elem` stationNames)) allTransfers
+  in if null invalidTransfers
+     then Right graph
+     else Left ("Invalid transfers (station not found): " ++ show invalidTransfers)
+
+getTransfersList :: Graph -> [(StationName, StationName)]
+getTransfersList graph =
+  [ (from, to)
+  | (from, tos) <- Map.toList (adjacency graph)
+  , (to, Weight w) <- tos
+  , w == 0
+  ]
+
+-- Вычисление расстояния между двумя станциями по координатам
+getDistanceBetweenStations :: Station -> Station -> Double
+getDistanceBetweenStations s1 s2 =
+  case (stationCoords s1, stationCoords s2) of
+    (Just c1, Just c2) -> haversineDistance c1 c2
+    _ -> 1.0  -- если нет координат, то 1 км (fallback)
 
 buildGraph :: JsonMetro -> Graph
 buildGraph metro =
   Graph
     { stations = stationsMap
-    , adjacency = edgesMap
+    , adjacency = edgesMapWithTransfers
     , isDirected = False
     }
   where
@@ -87,16 +127,32 @@ buildGraph metro =
             _ -> Nothing
       return (sid, Station sid (jsName station) (Just (jlName line)) coords)
 
-    edgesMap = foldr addLineEdges Map.empty (jmLines metro)
+    -- Строим рёбра по линиям (соседние станции) с РЕАЛЬНЫМ расстоянием
+    lineEdges = foldr addLineEdges Map.empty (jmLines metro)
 
     addLineEdges line acc =
-      let sts = jlStations line
-          pairs = zip sts (tail sts)
-      in foldr (\(s1, s2) m -> addEdge (jsName s1) (jsName s2) 1.0 m) acc pairs
+      let stationsSorted = sortOn jsOrder (jlStations line)
+          pairs = zip stationsSorted (tail stationsSorted)
+      in foldr (\(s1, s2) m -> 
+           let station1 = stationsMap Map.! jsName s1
+               station2 = stationsMap Map.! jsName s2
+               dist = getDistanceBetweenStations station1 station2
+           in addEdge (jsName s1) (jsName s2) dist m
+         ) acc pairs
 
     addEdge from to weight m =
       Map.insertWith (++) from [(to, Weight weight)] $
       Map.insertWith (++) to [(from, Weight weight)] m
+
+    -- Собираем все пересадки из JSON
+    allTransfers = do
+      line <- jmLines metro
+      station <- jlStations line
+      transfer <- jsTransfers station
+      return (jsName station, transfer)
+
+    -- Добавляем пересадки (вес 0)
+    edgesMapWithTransfers = foldr (\(from, to) acc -> addEdge from to 0.0 acc) lineEdges allTransfers
 
 exportGraphToJSON :: Graph -> FilePath -> IO ()
 exportGraphToJSON graph path = do
@@ -110,33 +166,39 @@ graphToJson graph =
     , jmLines = linesList
     }
   where
-    stationToLineMap :: Map.Map StationName T.Text
-    stationToLineMap = Map.mapMaybe stationLine (stations graph)
+    lineMap :: Map.Map T.Text [(StationName, Maybe (Double, Double), [StationName])]
+    lineMap = Map.foldrWithKey addToLine Map.empty (stations graph)
     
-    stationCoordsMap :: Map.Map StationName (Maybe (Double, Double))
-    stationCoordsMap = Map.map (\s -> case stationCoords s of
-                                        Just (Coordinates lat lng) -> Just (lat, lng)
-                                        Nothing -> Nothing) (stations graph)
-    
-    lineStations :: Map.Map T.Text [StationName]
-    lineStations = Map.foldrWithKey addToLine Map.empty (stations graph)
-    
-    addToLine :: StationName -> Station -> Map.Map T.Text [StationName] -> Map.Map T.Text [StationName]
+    addToLine :: StationName -> Station -> Map.Map T.Text [(StationName, Maybe (Double, Double), [StationName])] -> Map.Map T.Text [(StationName, Maybe (Double, Double), [StationName])]
     addToLine sid s acc =
-      case stationLine s of
-        Just lineName -> Map.insertWith (++) lineName [sid] acc
-        Nothing -> acc
+      let coords = case stationCoords s of
+            Just (Coordinates lat lng) -> Just (lng, lat)
+            Nothing -> Nothing
+          transfers = getTransfersForStation graph sid
+          entry = (sid, coords, transfers)
+      in case stationLine s of
+           Just lineName -> Map.insertWith (++) lineName [entry] acc
+           Nothing -> acc
+    
+    getTransfersForStation :: Graph -> StationName -> [StationName]
+    getTransfersForStation g sid =
+      case Map.lookup sid (adjacency g) of
+        Just tos -> [to | (to, Weight w) <- tos, w == 0]
+        Nothing -> []
+    
+    sortByOrder :: [(StationName, Maybe (Double, Double), [StationName])] -> [JsonStation]
+    sortByOrder sts = 
+      let withOrder = [(s, c, t, getOrderFromCoords c) | (s, c, t) <- sts]
+          sorted = sortOn (\(_, _, _, o) -> o) withOrder
+      in [JsonStation s (fmap snd c) (fmap fst c) o t | (s, c, t, o) <- sorted]
+    
+    getOrderFromCoords :: Maybe (Double, Double) -> Int
+    getOrderFromCoords Nothing = 0
+    getOrderFromCoords (Just (lng, lat)) = floor ((lat - 50) * 100)
     
     linesList = map (\(lineName, sts) ->
       JsonLine
         { jlName = lineName
-        , jlStations = map (\s -> JsonStation
-            { jsName = s
-            , jsLat = case Map.lookup s stationCoordsMap of
-                Just (Just (lat, _)) -> Just lat
-                _ -> Nothing
-            , jsLng = case Map.lookup s stationCoordsMap of
-                Just (Just (_, lng)) -> Just lng
-                _ -> Nothing
-            }) sts
-        }) (Map.toList lineStations)
+        , jlHexColor = Nothing
+        , jlStations = sortByOrder sts
+        }) (Map.toList lineMap)

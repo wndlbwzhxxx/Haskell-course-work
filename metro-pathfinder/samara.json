@@ -1,0 +1,21 @@
+{
+  "name": "Samara",
+  "lines": [
+    {
+      "name": "First Line",
+      "hex_color": "CD0505",
+      "stations": [
+        {"name": "Alabinskaya", "order": 0, "lat": 53.20969, "lng": 50.13442, "transfers": []},
+        {"name": "Rossiyskaya", "order": 1, "lat": 53.2113838, "lng": 50.15022, "transfers": []},
+        {"name": "Moskovskaya", "order": 2, "lat": 53.2037926, "lng": 50.159832, "transfers": []},
+        {"name": "Gagarinskaya", "order": 3, "lat": 53.2004433, "lng": 50.1765938, "transfers": []},
+        {"name": "Sportivnaya", "order": 4, "lat": 53.2011223, "lng": 50.1992874, "transfers": []},
+        {"name": "Sovetskaya", "order": 5, "lat": 53.2017365, "lng": 50.2206573, "transfers": []},
+        {"name": "Pobeda", "order": 6, "lat": 53.2073135, "lng": 50.2364159, "transfers": []},
+        {"name": "Bezymyanka", "order": 7, "lat": 53.2129974, "lng": 50.24889, "transfers": []},
+        {"name": "Kirovskaya", "order": 8, "lat": 53.2113533, "lng": 50.2697754, "transfers": []},
+        {"name": "Yungorodok", "order": 9, "lat": 53.2127, "lng": 50.28298, "transfers": []}
+      ]
+    }
+  ]
+}

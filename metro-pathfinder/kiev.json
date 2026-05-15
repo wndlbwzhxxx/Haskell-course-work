@@ -1,0 +1,75 @@
+{
+  "name": "Kyiv",
+  "lines": [
+    {
+      "name": "Sviatoshynsko-Brovarska",
+      "hex_color": "CD0505",
+      "stations": [
+        {"name": "Akademmistechko", "order": 0, "lat": 50.4647827, "lng": 30.35551, "transfers": []},
+        {"name": "Zhytomyrska", "order": 1, "lat": 50.455883, "lng": 30.36479, "transfers": []},
+        {"name": "Sviatoshyn", "order": 2, "lat": 50.4576836, "lng": 30.3917751, "transfers": []},
+        {"name": "Nyvky", "order": 3, "lat": 50.4586029, "lng": 30.4056816, "transfers": []},
+        {"name": "Beresteiska", "order": 4, "lat": 50.45856, "lng": 30.4205227, "transfers": []},
+        {"name": "Shuliavska", "order": 5, "lat": 50.45462, "lng": 30.4452076, "transfers": []},
+        {"name": "Politekhnichnyi Instytut", "order": 6, "lat": 50.4508133, "lng": 30.4663277, "transfers": []},
+        {"name": "Vokzalna", "order": 7, "lat": 50.44178, "lng": 30.4882736, "transfers": []},
+        {"name": "Universytet", "order": 8, "lat": 50.4444, "lng": 30.5060062, "transfers": []},
+        {"name": "Teatralna", "order": 9, "lat": 50.4451332, "lng": 30.5181789, "transfers": ["Zoloti Vorota"]},
+        {"name": "Khreshchatyk", "order": 10, "lat": 50.44722, "lng": 30.5249329, "transfers": ["Maidan Nezalezhnosti"]},
+        {"name": "Arsenalna", "order": 11, "lat": 50.4443321, "lng": 30.54538, "transfers": []},
+        {"name": "Dnipro", "order": 12, "lat": 50.4412155, "lng": 30.5593739, "transfers": []},
+        {"name": "Hidropark", "order": 13, "lat": 50.4459572, "lng": 30.57699, "transfers": []},
+        {"name": "Livoberezhna", "order": 14, "lat": 50.4518, "lng": 30.59811, "transfers": []},
+        {"name": "Darnytsia", "order": 15, "lat": 50.455925, "lng": 30.6129055, "transfers": []},
+        {"name": "Chernihivska", "order": 16, "lat": 50.45985, "lng": 30.6302681, "transfers": []},
+        {"name": "Lisova", "order": 17, "lat": 50.46463, "lng": 30.64554, "transfers": []}
+      ]
+    },
+    {
+      "name": "Kurenivsko-Krasnoarmiiska",
+      "hex_color": "069CD3",
+      "stations": [
+        {"name": "Heroiv Dnipra", "order": 0, "lat": 50.52258, "lng": 30.4988918, "transfers": []},
+        {"name": "Minska", "order": 1, "lat": 50.5121956, "lng": 30.49854, "transfers": []},
+        {"name": "Obolon", "order": 2, "lat": 50.5014648, "lng": 30.4982529, "transfers": []},
+        {"name": "Petrivka", "order": 3, "lat": 50.4860725, "lng": 30.4978848, "transfers": []},
+        {"name": "Tarasa Shevchenka", "order": 4, "lat": 50.4732857, "lng": 30.5051346, "transfers": []},
+        {"name": "Kontraktova Ploshcha", "order": 5, "lat": 50.4656029, "lng": 30.5148354, "transfers": []},
+        {"name": "Poshtova Ploshcha", "order": 6, "lat": 50.4589348, "lng": 30.5249329, "transfers": []},
+        {"name": "Maidan Nezalezhnosti", "order": 7, "lat": 50.4500275, "lng": 30.5241966, "transfers": ["Khreshchatyk"]},
+        {"name": "Ploshcha Lva Tolstoho", "order": 8, "lat": 50.43922, "lng": 30.5163269, "transfers": ["Palats Sportu"]},
+        {"name": "Olimpiiska", "order": 9, "lat": 50.4322433, "lng": 30.51621, "transfers": []},
+        {"name": "Palats Ukraina", "order": 10, "lat": 50.4206429, "lng": 30.5207386, "transfers": []},
+        {"name": "Lybidska", "order": 11, "lat": 50.4127121, "lng": 30.52488, "transfers": []},
+        {"name": "Demiivska", "order": 12, "lat": 50.4045639, "lng": 30.5166149, "transfers": []},
+        {"name": "Holosiivska", "order": 13, "lat": 50.39788, "lng": 30.5100651, "transfers": []},
+        {"name": "Vasylkivska", "order": 14, "lat": 50.3928146, "lng": 30.4855518, "transfers": []},
+        {"name": "Vystavkovyi Tsentr", "order": 15, "lat": 50.38209, "lng": 30.4771347, "transfers": []},
+        {"name": "Ipodrom", "order": 16, "lat": 50.3765259, "lng": 30.4689236, "transfers": []},
+        {"name": "Teremky", "order": 17, "lat": 50.3670425, "lng": 30.4542027, "transfers": []}
+      ]
+    },
+    {
+      "name": "Syretsko-Pecherska",
+      "hex_color": "0A6F20",
+      "stations": [
+        {"name": "Syrets", "order": 0, "lat": 50.47622, "lng": 30.4307365, "transfers": []},
+        {"name": "Dorohozhychi", "order": 1, "lat": 50.4734535, "lng": 30.4484062, "transfers": []},
+        {"name": "Lukianivska", "order": 2, "lat": 50.46225, "lng": 30.4821014, "transfers": []},
+        {"name": "Zoloti Vorota", "order": 3, "lat": 50.44834, "lng": 30.5136681, "transfers": ["Teatralna"]},
+        {"name": "Palats Sportu", "order": 4, "lat": 50.43784, "lng": 30.5206833, "transfers": ["Ploshcha Lva Tolstoho"]},
+        {"name": "Klovska", "order": 5, "lat": 50.43673, "lng": 30.5319214, "transfers": []},
+        {"name": "Pecherska", "order": 6, "lat": 50.4273148, "lng": 30.5387764, "transfers": []},
+        {"name": "Druzhby Narodiv", "order": 7, "lat": 50.418, "lng": 30.5444622, "transfers": []},
+        {"name": "Vydubychi", "order": 8, "lat": 50.40143, "lng": 30.5606861, "transfers": []},
+        {"name": "Slavutych", "order": 9, "lat": 50.394165, "lng": 30.6044521, "transfers": []},
+        {"name": "Osokorky", "order": 10, "lat": 50.39554, "lng": 30.616148, "transfers": []},
+        {"name": "Pozniaky", "order": 11, "lat": 50.3983421, "lng": 30.63433, "transfers": []},
+        {"name": "Kharkivska", "order": 12, "lat": 50.4010735, "lng": 30.652, "transfers": []},
+        {"name": "Vyrlytsia", "order": 13, "lat": 50.4031868, "lng": 30.66597, "transfers": []},
+        {"name": "Boryspilska", "order": 14, "lat": 50.4034042, "lng": 30.6829739, "transfers": []},
+        {"name": "Chervonyi Khutir", "order": 15, "lat": 50.4095039, "lng": 30.6959171, "transfers": []}
+      ]
+    }
+  ]
+}

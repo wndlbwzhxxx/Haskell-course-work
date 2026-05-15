@@ -1,0 +1,102 @@
+{
+  "name": "Saint Petersburg",
+  "lines": [
+    {
+      "name": "Kirovsko-Vyborgskaya",
+      "hex_color": "D6083B",
+      "stations": [
+        {"name": "Devyatkino", "order": 0, "lat": 60.0501823, "lng": 30.4430447, "transfers": []},
+        {"name": "Grazhdansky Prospekt", "order": 1, "lat": 60.03497, "lng": 30.4182243, "transfers": []},
+        {"name": "Akademicheskaya", "order": 2, "lat": 60.0128059, "lng": 30.3960438, "transfers": []},
+        {"name": "Politekhnicheskaya", "order": 3, "lat": 60.00894, "lng": 30.3709068, "transfers": []},
+        {"name": "Ploshchad Muzhestva", "order": 4, "lat": 59.99983, "lng": 30.36616, "transfers": []},
+        {"name": "Lesnaya", "order": 5, "lat": 59.9849472, "lng": 30.34426, "transfers": []},
+        {"name": "Vyborgskaya", "order": 6, "lat": 59.9709244, "lng": 30.3474083, "transfers": []},
+        {"name": "Ploshchad Lenina", "order": 7, "lat": 59.9556122, "lng": 30.35605, "transfers": []},
+        {"name": "Chernyshevskaya", "order": 8, "lat": 59.94453, "lng": 30.3599186, "transfers": []},
+        {"name": "Ploshchad Vosstaniya", "order": 9, "lat": 59.93028, "lng": 30.3610687, "transfers": ["Mayakovskaya"]},
+        {"name": "Vladimirskaya", "order": 10, "lat": 59.9276276, "lng": 30.3478985, "transfers": ["Dostoevskaya"]},
+        {"name": "Pushkinskaya", "order": 11, "lat": 59.92065, "lng": 30.3296, "transfers": ["Zvenigorodskaya"]},
+        {"name": "Tekhnologichesky Institut", "order": 12, "lat": 59.91651, "lng": 30.3184853, "transfers": ["Tekhnologichesky Institut 2"]},
+        {"name": "Baltiyskaya", "order": 13, "lat": 59.90721, "lng": 30.2995777, "transfers": []},
+        {"name": "Narvskaya", "order": 14, "lat": 59.90122, "lng": 30.2749081, "transfers": []},
+        {"name": "Kirovsky Zavod", "order": 15, "lat": 59.87969, "lng": 30.26192, "transfers": []},
+        {"name": "Avtovo", "order": 16, "lat": 59.8673248, "lng": 30.2613373, "transfers": []},
+        {"name": "Leninsky Prospekt", "order": 17, "lat": 59.85117, "lng": 30.2682743, "transfers": []},
+        {"name": "Prospekt Veteranov", "order": 18, "lat": 59.84211, "lng": 30.2505875, "transfers": []}
+      ]
+    },
+    {
+      "name": "Moskovsko-Petrogradskaya",
+      "hex_color": "0078C9",
+      "stations": [
+        {"name": "Parnas", "order": 0, "lat": 60.06699, "lng": 30.33384, "transfers": []},
+        {"name": "Prospekt Prosveshcheniya", "order": 1, "lat": 60.0514565, "lng": 30.3325443, "transfers": []},
+        {"name": "Ozerki", "order": 2, "lat": 60.0370979, "lng": 30.3214951, "transfers": []},
+        {"name": "Udelnaya", "order": 3, "lat": 60.0166969, "lng": 30.3156071, "transfers": []},
+        {"name": "Pionerskaya", "order": 4, "lat": 60.0024872, "lng": 30.2967587, "transfers": []},
+        {"name": "Chyornaya Rechka", "order": 5, "lat": 59.9854546, "lng": 30.3008327, "transfers": []},
+        {"name": "Petrogradskaya", "order": 6, "lat": 59.96639, "lng": 30.3112926, "transfers": []},
+        {"name": "Gorkovskaya", "order": 7, "lat": 59.9561119, "lng": 30.31889, "transfers": []},
+        {"name": "Nevsky Prospekt", "order": 8, "lat": 59.93542, "lng": 30.3270512, "transfers": []},
+        {"name": "Sennaya Ploshchad", "order": 9, "lat": 59.9271355, "lng": 30.3203163, "transfers": ["Sadovaya"]},
+        {"name": "Tekhnologichesky Institut 2", "order": 10, "lat": 59.91651, "lng": 30.3184853, "transfers": ["Tekhnologichesky Institut"]},
+        {"name": "Frunzenskaya", "order": 11, "lat": 59.9062729, "lng": 30.31745, "transfers": []},
+        {"name": "Moskovskie Vorota", "order": 12, "lat": 59.89179, "lng": 30.317873, "transfers": []},
+        {"name": "Elektrosila", "order": 13, "lat": 59.87919, "lng": 30.3186588, "transfers": []},
+        {"name": "Park Pobedy", "order": 14, "lat": 59.8663445, "lng": 30.3218021, "transfers": []},
+        {"name": "Moskovskaya", "order": 15, "lat": 59.8488731, "lng": 30.3214836, "transfers": []},
+        {"name": "Zvyozdnaya", "order": 16, "lat": 59.83324, "lng": 30.3494282, "transfers": []},
+        {"name": "Kupchino", "order": 17, "lat": 59.82978, "lng": 30.3757019, "transfers": []}
+      ]
+    },
+    {
+      "name": "Nevsko-Vasileostrovskaya",
+      "hex_color": "009A49",
+      "stations": [
+        {"name": "Primorskaya", "order": 0, "lat": 59.94852, "lng": 30.23447, "transfers": []},
+        {"name": "Vasileostrovskaya", "order": 1, "lat": 59.9425774, "lng": 30.2782536, "transfers": []},
+        {"name": "Gostiny Dvor", "order": 2, "lat": 59.9339333, "lng": 30.33341, "transfers": []},
+        {"name": "Mayakovskaya", "order": 3, "lat": 59.931366, "lng": 30.3546448, "transfers": ["Ploshchad Vosstaniya"]},
+        {"name": "Ploshchad Alexandra Nevskogo 1", "order": 4, "lat": 59.92437, "lng": 30.3849888, "transfers": ["Ploshchad Alexandra Nevskogo 2"]},
+        {"name": "Yelizarovskaya", "order": 5, "lat": 59.89669, "lng": 30.4236565, "transfers": []},
+        {"name": "Lomonosovskaya", "order": 6, "lat": 59.8773422, "lng": 30.4417152, "transfers": []},
+        {"name": "Proletarskaya", "order": 7, "lat": 59.8652153, "lng": 30.4702644, "transfers": []},
+        {"name": "Obukhovo", "order": 8, "lat": 59.84871, "lng": 30.4577427, "transfers": []},
+        {"name": "Rybatskoye", "order": 9, "lat": 59.830986, "lng": 30.5012589, "transfers": []}
+      ]
+    },
+    {
+      "name": "Pravoberezhnaya",
+      "hex_color": "EA7125",
+      "stations": [
+        {"name": "Spasskaya", "order": 0, "lat": 59.9271355, "lng": 30.3203163, "transfers": ["Sadovaya"]},
+        {"name": "Dostoevskaya", "order": 1, "lat": 59.9282341, "lng": 30.34603, "transfers": ["Vladimirskaya"]},
+        {"name": "Ligovsky Prospekt", "order": 2, "lat": 59.92081, "lng": 30.3550549, "transfers": []},
+        {"name": "Ploshchad Alexandra Nevskogo 2", "order": 3, "lat": 59.92356, "lng": 30.38342, "transfers": ["Ploshchad Alexandra Nevskogo 1"]},
+        {"name": "Novocherkasskaya", "order": 4, "lat": 59.9290924, "lng": 30.4119148, "transfers": []},
+        {"name": "Ladozhskaya", "order": 5, "lat": 59.93243, "lng": 30.4392738, "transfers": []},
+        {"name": "Prospekt Bolshevikov", "order": 6, "lat": 59.919838, "lng": 30.4667568, "transfers": []},
+        {"name": "Ulitsa Dybenko", "order": 7, "lat": 59.9074173, "lng": 30.48331, "transfers": []}
+      ]
+    },
+    {
+      "name": "Frunzensko-Primorskaya",
+      "hex_color": "702785",
+      "stations": [
+        {"name": "Komendantsky Prospekt", "order": 0, "lat": 60.00859, "lng": 30.2586632, "transfers": []},
+        {"name": "Staraya Derevnya", "order": 1, "lat": 59.9894333, "lng": 30.2551632, "transfers": []},
+        {"name": "Krestovsky Ostrov", "order": 2, "lat": 59.97182, "lng": 30.2594357, "transfers": []},
+        {"name": "Chkalovskaya", "order": 3, "lat": 59.9610329, "lng": 30.2920055, "transfers": []},
+        {"name": "Sportivnaya", "order": 4, "lat": 59.9520264, "lng": 30.291338, "transfers": []},
+        {"name": "Admiralteyskaya", "order": 5, "lat": 59.9358673, "lng": 30.31523, "transfers": []},
+        {"name": "Sadovaya", "order": 6, "lat": 59.92674, "lng": 30.3177528, "transfers": ["Sennaya Ploshchad", "Spasskaya"]},
+        {"name": "Zvenigorodskaya", "order": 7, "lat": 59.92065, "lng": 30.3296, "transfers": ["Pushkinskaya"]},
+        {"name": "Obvodny Kanal", "order": 8, "lat": 59.9146843, "lng": 30.34815, "transfers": []},
+        {"name": "Volkovskaya", "order": 9, "lat": 59.8960228, "lng": 30.35754, "transfers": []},
+        {"name": "Bukharestskaya", "order": 10, "lat": 59.88377, "lng": 30.3689327, "transfers": []},
+        {"name": "Mezhdunarodnaya", "order": 11, "lat": 59.8702, "lng": 30.37929, "transfers": []}
+      ]
+    }
+  ]
+}

@@ -2,11 +2,12 @@
   "name": "Test Metro",
   "lines": [
     {
-      "name": "Red Line",
+      "name": "Test Line",
+      "hex_color": "FF0000",
       "stations": [
-        {"name": "A", "lat": 55.0, "lng": 37.0},
-        {"name": "B", "lat": 55.1, "lng": 37.1},
-        {"name": "C", "lat": 55.2, "lng": 37.2}
+        {"name": "A", "order": 0, "lat": 55.0, "lng": 37.0, "transfers": []},
+        {"name": "B", "order": 1, "lat": 55.1, "lng": 37.1, "transfers": []},
+        {"name": "C", "order": 2, "lat": 55.2, "lng": 37.2, "transfers": []}
       ]
     }
   ]

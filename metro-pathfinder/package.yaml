@@ -28,7 +28,8 @@ dependencies:
 - bytestring >= 0.11.3.0
 - filepath >= 1.4.2
 - aeson >= 2.0.3.0
-- graphite >= 0.10
+- process >= 1.6.0.0
+#- graphite >= 0.10
 
 ghc-options:
 - -Wall

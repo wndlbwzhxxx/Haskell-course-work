@@ -22,3 +22,94 @@
 2026-05-14 19:49:44 [Info] Path found from A to C
 2026-05-14 19:49:55 [Info] Path visualization saved to 1.png
 2026-05-14 19:50:22 [Info] Application exited
+2026-05-15 02:47:08 [Info] Application started
+2026-05-15 02:47:25 [Info] Graph loaded from samara.json
+2026-05-15 02:47:39 [Info] Graph visualization saved to samara1
+2026-05-15 02:49:50 [Info] Application exited
+2026-05-15 02:50:03 [Info] Application started
+2026-05-15 02:50:10 [Info] Graph loaded from samara.json
+2026-05-15 02:50:22 [Info] Graph visualization saved to samara2
+2026-05-15 02:59:19 [Info] Application exited
+2026-05-15 03:01:22 [Info] Application started
+2026-05-15 03:01:33 [Info] Graph loaded from spb.json
+2026-05-15 03:01:42 [Info] Graph visualization saved to spb1
+2026-05-15 03:02:04 [Info] Graph loaded from samara.json
+2026-05-15 03:02:15 [Info] Graph visualization saved to samara3
+2026-05-15 03:03:43 [Info] Application exited
+2026-05-15 03:05:47 [Info] Application started
+2026-05-15 03:05:53 [Info] Graph loaded from samara.json
+2026-05-15 03:06:09 [Info] Graph visualization saved to samara4
+2026-05-15 03:06:26 [Info] Graph visualization saved to samara4.png
+2026-05-15 03:07:21 [Info] Application exited
+2026-05-15 03:07:29 [Info] Application started
+2026-05-15 03:07:36 [Info] Graph loaded from samara.json
+2026-05-15 03:08:01 [Info] Graph visualization saved to samara4.png
+2026-05-15 03:09:07 [Info] Application exited
+2026-05-15 03:09:36 [Info] Application started
+2026-05-15 03:09:55 [Info] Graph loaded from spb.json
+2026-05-15 03:10:03 [Info] Graph visualization saved to spb2.png
+2026-05-15 03:11:45 [Info] Application exited
+2026-05-15 03:11:48 [Info] Application started
+2026-05-15 03:12:06 [Info] Graph loaded from spb.json
+2026-05-15 03:12:23 [Info] Graph visualization saved to spb3.png
+2026-05-15 03:14:10 [Info] Application exited
+2026-05-15 03:14:19 [Info] Application started
+2026-05-15 03:14:23 [Info] Graph loaded from spb.json
+2026-05-15 03:14:32 [Info] Graph visualization saved to spb4.png
+2026-05-15 03:15:58 [Info] Application exited
+2026-05-15 03:16:07 [Info] Application started
+2026-05-15 03:16:13 [Info] Graph loaded from spb.json
+2026-05-15 03:16:32 [Info] Graph visualization saved to spb5.png
+2026-05-15 03:17:47 [Info] Application exited
+2026-05-15 03:17:54 [Info] Application started
+2026-05-15 03:17:58 [Info] Graph loaded from spb.json
+2026-05-15 03:18:07 [Info] Graph visualization saved to spb6.png
+2026-05-15 03:23:47 [Info] Application exited
+2026-05-15 03:23:58 [Info] Application started
+2026-05-15 03:24:04 [Info] Graph loaded from spb.json
+2026-05-15 03:24:11 [Info] Graph visualization saved to spb7.png
+2026-05-15 03:25:53 [Info] Application exited
+2026-05-15 03:26:03 [Info] Application started
+2026-05-15 03:26:07 [Info] Graph loaded from spb.json
+2026-05-15 03:26:13 [Info] Graph visualization saved to spb8.png
+2026-05-15 03:26:29 [Info] Application exited
+2026-05-15 03:32:26 [Info] Application started
+2026-05-15 03:32:31 [Info] Graph loaded from spb.json
+2026-05-15 03:32:38 [Info] Graph visualization saved to spb9.png
+2026-05-15 03:34:01 [Info] Application exited
+2026-05-15 03:34:11 [Info] Application started
+2026-05-15 03:34:17 [Info] Graph loaded from spb.json
+2026-05-15 03:34:28 [Info] Graph visualization saved to spb10.png
+2026-05-15 03:37:13 [Info] Application exited
+2026-05-15 03:37:23 [Info] Application started
+2026-05-15 03:37:31 [Info] Graph loaded from spb.json
+2026-05-15 03:37:41 [Info] Graph visualization saved to spb11.png
+2026-05-15 03:40:11 [Info] Application exited
+2026-05-15 03:41:11 [Info] Application started
+2026-05-15 03:41:15 [Info] Graph loaded from spb.json
+2026-05-15 03:41:25 [Info] Graph visualization saved to spb12.png
+2026-05-15 03:43:00 [Info] Application exited
+2026-05-15 03:43:11 [Info] Application started
+2026-05-15 03:43:14 [Info] Graph loaded from spb.json
+2026-05-15 03:43:25 [Info] Graph visualization saved to spb13.png
+2026-05-15 03:46:18 [Info] Path found from Vladimirskaya to Avtovo
+2026-05-15 03:46:57 [Info] Path visualization saved to spbput0.png
+2026-05-15 03:48:06 [Info] Application exited
+2026-05-15 03:57:02 [Info] Application started
+2026-05-15 03:57:23 [Info] Graph loaded from spb.json
+2026-05-15 04:00:21 [Info] Application exited
+2026-05-15 04:01:51 [Info] Application started
+2026-05-15 04:04:55 [Info] Graph loaded from spb.json
+2026-05-15 04:05:17 [Info] Path found from Ozerki to Devyatkino
+2026-05-15 04:08:24 [Info] Application exited
+2026-05-15 04:08:36 [Info] Application started
+2026-05-15 04:08:41 [Info] Graph loaded from spb.json
+2026-05-15 04:11:34 [Info] Application started
+2026-05-15 04:11:42 [Info] Graph loaded from spb.json
+2026-05-15 04:11:50 [Info] Path found from Ozerki to Devyatkino
+2026-05-15 04:13:45 [Info] Application exited
+2026-05-15 04:13:55 [Info] Application started
+2026-05-15 04:14:00 [Info] Graph loaded from spb.json
+2026-05-15 04:14:14 [Info] Path found from Devyatkino to Ozerki
+2026-05-15 04:14:24 [Info] Path found from Ozerki to Devyatkino
+2026-05-15 04:17:46 [Info] Application exited
