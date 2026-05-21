@@ -12,7 +12,6 @@ import System.Directory (removeFile)
 import System.FilePath (replaceExtension)
 import Data.List (minimum, maximum)
 
--- Раздвигаем станции, которые находятся слишком близко (расстояние < 0.9)
 spreadCloseStations :: [(StationName, (Double, Double))] -> [(StationName, (Double, Double))]
 spreadCloseStations stations =
   let minDist = 0.9
@@ -52,11 +51,11 @@ scaleCoords coords =
       rangeX = maxX - minX
       rangeY = maxY - minY
       scaleX x = if rangeX < 0.05
-                 then (x - minX) * 1000 + 20
-                 else (x - minX) / rangeX * 500 + 20
+                 then (x - minX) * 800 + 20
+                 else (x - minX) / rangeX * 400 + 20
       scaleY y = if rangeY < 0.05
-                 then (y - minY) * 600 + 20
-                 else (y - minY) / rangeY * 250 + 20
+                 then (y - minY) * 500 + 20
+                 else (y - minY) / rangeY * 200 + 20
   in [(name, (scaleX x, scaleY y)) | (name, (x, y)) <- coords]
 
 getCoords :: Graph -> StationName -> Maybe (Double, Double)
@@ -71,8 +70,8 @@ generateDot graph mHighlight =
   T.unlines $
     [ "graph G {"
     , "  charset=latin1;"
-    , "  node [shape=box, style=filled, fillcolor=lightblue, fontname=\"Arial\", fontsize=160];"
-    , "  edge [fontname=\"Arial\", fontsize=140];"
+    , "  node [shape=box, style=filled, fillcolor=lightblue, fontname=\"Arial\", fontsize=80];"
+    , "  edge [fontname=\"Arial\", fontsize=70];"
     ] ++
     map nodeLine scaledNodes ++
     map edgeLine (uniqueEdges (adjacency graph)) ++
@@ -91,7 +90,7 @@ generateDot graph mHighlight =
       let label = T.unpack name
           cleanLabel = cleanName label
           color = if Set.member name highlightSet
-                  then " [label=\"" ++ cleanLabel ++ "\", color=red, penwidth=30]"
+                  then " [label=\"" ++ cleanLabel ++ "\", color=red, penwidth=15]"
                   else " [label=\"" ++ cleanLabel ++ "\"]"
       in T.pack $ "  \"" ++ cleanLabel ++ "\"" ++ color ++ " [pos=\"" ++ show x ++ "," ++ show y ++ "!\"];"
     
@@ -101,14 +100,14 @@ generateDot graph mHighlight =
           cleanFrom = cleanName fromLabel
           cleanTo = cleanName toLabel
           attrs = if isTransfer
-                  then " [color=green, penwidth=30, fontcolor=green]"
-                  else " [label=\"" ++ show w ++ " km\", fontsize=130]"
+                  then " [color=gray, penwidth=3]"
+                  else " [label=\"" ++ show w ++ " km\", fontsize=65]"
       in T.pack $ "  \"" ++ cleanFrom ++ "\" -- \"" ++ cleanTo ++ "\"" ++ attrs ++ ";"
 
 uniqueEdges :: Map.Map StationName [(StationName, Weight)] -> [(StationName, StationName, Double, Bool)]
 uniqueEdges adj = 
-  [ (from, to, w', False) | (from, tos) <- Map.toList adj, (to, Weight w') <- tos, from < to, w' > 0 ] ++
-  [ (from, to, 0, True) | (from, tos) <- Map.toList adj, (to, Weight w') <- tos, from < to, w' == 0 ]
+  [ (from, to, w', False) | (from, tos) <- Map.toList adj, (to, Weight w') <- tos, from < to, w' > 0.5 ] ++
+  [ (from, to, w', True) | (from, tos) <- Map.toList adj, (to, Weight w') <- tos, from < to, w' <= 0.5 && w' > 0 ]
 
 renderGraphToPNG :: Graph -> FilePath -> IO ()
 renderGraphToPNG graph outputPath = do

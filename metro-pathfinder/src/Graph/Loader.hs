@@ -103,12 +103,11 @@ getTransfersList graph =
   , w == 0
   ]
 
--- Вычисление расстояния между двумя станциями по координатам
 getDistanceBetweenStations :: Station -> Station -> Double
 getDistanceBetweenStations s1 s2 =
   case (stationCoords s1, stationCoords s2) of
     (Just c1, Just c2) -> haversineDistance c1 c2
-    _ -> 1.0  -- если нет координат, то 1 км (fallback)
+    _ -> 1.0
 
 buildGraph :: JsonMetro -> Graph
 buildGraph metro =
@@ -127,7 +126,6 @@ buildGraph metro =
             _ -> Nothing
       return (sid, Station sid (jsName station) (Just (jlName line)) coords)
 
-    -- Строим рёбра по линиям (соседние станции) с РЕАЛЬНЫМ расстоянием
     lineEdges = foldr addLineEdges Map.empty (jmLines metro)
 
     addLineEdges line acc =
@@ -144,15 +142,13 @@ buildGraph metro =
       Map.insertWith (++) from [(to, Weight weight)] $
       Map.insertWith (++) to [(from, Weight weight)] m
 
-    -- Собираем все пересадки из JSON
     allTransfers = do
       line <- jmLines metro
       station <- jlStations line
       transfer <- jsTransfers station
       return (jsName station, transfer)
 
-    -- Добавляем пересадки (вес 0)
-    edgesMapWithTransfers = foldr (\(from, to) acc -> addEdge from to 0.0 acc) lineEdges allTransfers
+    edgesMapWithTransfers = foldr (\(from, to) acc -> addEdge from to 0.1 acc) lineEdges allTransfers
 
 exportGraphToJSON :: Graph -> FilePath -> IO ()
 exportGraphToJSON graph path = do

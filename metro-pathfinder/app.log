@@ -84,3 +84,59 @@
 2026-05-15 19:09:49 [Info] Application started
 2026-05-15 19:10:06 [Info] Graph loaded from spb.json
 2026-05-15 19:10:25 [Info] Graph visualization saved to graph.png
+2026-05-15 19:17:38 [Info] Path found from Parnas to Politekhnicheskaya
+2026-05-15 19:18:07 [Info] Path visualization saved to path.png
+2026-05-15 19:19:00 [Info] Graph loaded from spb.json
+2026-05-15 19:19:11 [Info] Graph visualization saved to graph.png
+2026-05-15 19:19:21 [Info] Application exited
+2026-05-15 19:19:26 [Info] Application started
+2026-05-15 19:19:31 [Info] Graph loaded from spb.json
+2026-05-15 19:19:41 [Info] Graph visualization saved to graph.png
+2026-05-15 19:20:52 [Info] Application exited
+2026-05-15 19:21:04 [Info] Application started
+2026-05-15 19:21:11 [Info] Graph loaded from spb.json
+2026-05-15 19:21:15 [Info] Graph visualization saved to graph.png
+2026-05-15 19:22:01 [Info] Application exited
+2026-05-15 19:22:10 [Info] Application started
+2026-05-15 19:22:14 [Info] Graph loaded from spb.json
+2026-05-15 19:22:27 [Info] Graph visualization saved to graph.png
+2026-05-15 19:23:28 [Info] Application exited
+2026-05-15 19:25:16 [Info] Application started
+2026-05-15 19:25:22 [Info] Graph loaded from spb.json
+2026-05-15 19:25:47 [Info] Graph visualization saved to graph.png
+2026-05-15 19:26:56 [Info] Path found from Parnas to Politekhnicheskaya
+2026-05-15 19:27:28 [Info] Path visualization saved to path.png
+2026-05-15 19:28:40 [Info] Graph loaded from spb.json
+2026-05-15 19:28:51 [Info] Path found from Politekhnicheskaya to Parnas
+2026-05-15 19:29:22 [Info] Path visualization saved to path.png
+2026-05-15 21:49:55 [Info] Graph loaded from spb.json
+2026-05-15 21:50:52 [Info] Path found from Sportivnaya to Moskovskie Vorota
+2026-05-15 21:51:36 [Info] Path visualization saved to path.png
+2026-05-21 21:09:28 [Info] Application started
+2026-05-21 21:09:42 [Info] Graph loaded from spb.json
+2026-05-21 22:42:28 [Info] Graph visualization saved to graph.png
+2026-05-21 22:44:11 [Info] Application exited
+2026-05-21 22:44:51 [Info] Application started
+2026-05-21 22:44:55 [Info] Graph loaded from spb.json
+2026-05-21 22:45:16 [Info] Graph visualization saved to graph.png
+2026-05-21 22:49:08 [Info] Graph loaded from spb.json
+2026-05-21 22:49:26 [Info] Graph visualization saved to graph.png
+2026-05-21 22:51:22 [Info] Graph loaded from spb.json
+2026-05-21 22:51:40 [Info] Graph visualization saved to graph.png
+2026-05-21 22:53:07 [Info] Path found from Parnas to Politekhnicheskaya
+2026-05-21 22:53:44 [Info] Path visualization saved to path.png
+2026-05-21 22:55:47 [Info] Application exited
+2026-05-21 22:56:02 [Info] Application started
+2026-05-21 22:56:09 [Info] Graph loaded from spb.json
+2026-05-21 22:56:18 [Info] Path found from Parnas to Politekhnicheskaya
+2026-05-21 22:56:38 [Info] Path visualization saved to path.png
+2026-05-21 22:59:50 [Info] Application exited
+2026-05-21 22:59:59 [Info] Application started
+2026-05-21 23:00:13 [Info] Graph loaded from spb.json
+2026-05-21 23:00:19 [Info] Path found from Parnas to Politekhnicheskaya
+2026-05-21 23:00:39 [Info] Path visualization saved to path.png
+2026-05-21 23:03:42 [Info] Application exited
+2026-05-21 23:03:51 [Info] Application started
+2026-05-21 23:03:55 [Info] Graph loaded from spb.json
+2026-05-21 23:04:00 [Info] Path found from Parnas to Politekhnicheskaya
+2026-05-21 23:04:21 [Info] Path visualization saved to path.png
